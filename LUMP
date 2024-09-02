@@ -1,0 +1,29 @@
+import asyncio
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
+from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
+
+TOKEN = "7412076033:AAE8aiINodpNSyWkguzXYrwtEpQ881hSK0o"
+GROUP_IDS = [-1001821958950, -1002152574020]
+
+async def send_link(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    keyboard = [
+        [InlineKeyboardButton("SITE", url="https://meme-lump.xyz")],
+        [InlineKeyboardButton("SOLSCAN", url="https://solscan.io/token/5fUYozGa5rByHCL4iS7hDEusVXvzkN81hc8VwwuT9G5g")],
+        [InlineKeyboardButton("BUY", url="https://dexscreener.com/solana/GrRBy8qYLCBAwmAF8VUPnjdYT3gbRvVrxU2xpQM3qK8S")]
+    ]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    await context.bot.send_message(chat_id=GROUP_ID, text="Here are the important LUMP token links:", reply_markup=reply_markup)
+
+def main():
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    app = ApplicationBuilder().token(TOKEN).build()
+
+    # /LUMP 명령어를 처리하는 핸들러입니다.
+    app.add_handler(CommandHandler('LUMP', send_link))
+    
+    loop.run_until_complete(app.run_polling())
+    loop.close()
+
+if __name__ == '__main__':
+    main()
